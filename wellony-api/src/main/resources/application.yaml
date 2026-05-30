@@ -1,3 +1,16 @@
 spring:
   application:
     name: wellony
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wellony
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: 6a9c360d92a48c39e091b5143ec07ce6ebe9954319cbd85bf34505f80d9abfd4
+  expiry-ms: 604800000
