@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres
+    container_name: db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wellony
+  redis:
+    image: redis:8.8.0
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: redis
+
+volumes:
+  postgres_data:
+  redis_data:
