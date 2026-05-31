@@ -1,4 +1,10 @@
 package git.whitechoke.wellony.dto.auth;
 
-public record RegisterRequestDto() {
+import jakarta.validation.constraints.NotNull;
+
+public record RegisterRequestDto(
+        @NotNull String email,
+        @NotNull String password,
+        @NotNull String username
+) {
 }
