@@ -1,28 +1,23 @@
 package git.whitechoke.wellony.service;
 
-import git.whitechoke.wellony.db.repository.UserRepository;
+import git.whitechoke.wellony.dto.auth.AuthResponseDto;
 import git.whitechoke.wellony.dto.auth.LoginRequestDto;
 import git.whitechoke.wellony.dto.auth.LoginResponseDto;
-import git.whitechoke.wellony.dto.auth.RegisterRequestDto;
 import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
 import git.whitechoke.wellony.security.AuthUserDetails;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import git.whitechoke.wellony.security.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
 
 @Slf4j
 @Service
@@ -32,51 +27,9 @@ public class AuthService {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final JwtUtils jwtUtils;
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-    @Value("${jwt.expiry-ms}")
-    private int expiryMs;
-
-    public String generateToken(AuthUserDetails userDetails) {
-
-        var claims = new HashMap<String, Object>();
-        claims.put("userId", userDetails.getId());
-
-        return Jwts.builder()
-                .claims(claims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiryMs))
-                .signWith(getSigningKey())
-                .compact();
-    }
-
-    public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        var claims = extractClaims(token);
-
-        return claims.getSubject().equals(userDetails.getUsername())
-                && !claims.getExpiration().before(new Date());
-    }
-
-    private Claims extractClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    private SecretKey getSigningKey() {
-        byte[] encodedKey = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(encodedKey);
-    }
-
-    public LoginResponseDto login(LoginRequestDto request) {
+    public LoginResponseDto login(LoginRequestDto request, HttpServletResponse response) {
 
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -85,12 +38,28 @@ public class AuthService {
                 )
         );
 
-        var token = generateToken((AuthUserDetails) authentication.getPrincipal());
+        var accessToken = jwtUtils.generateAccessToken(
+                (AuthUserDetails) authentication.getPrincipal()
+        );
+
+        var refreshToken = jwtUtils.generateRefreshToken(
+                (AuthUserDetails) authentication.getPrincipal()
+        );
+
+        var cookies = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(jwtUtils.getRefreshExpiryMs()/1000)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookies.toString());
 
         return LoginResponseDto.builder().id(
                 ((AuthUserDetails) authentication.getPrincipal()).getId())
-                .token(token)
-                .expire(expiryMs)
+                .token(accessToken)
+                .expire(jwtUtils.getAccessExpiryMs())
                 .build();
     }
 
@@ -98,14 +67,23 @@ public class AuthService {
 
         var created = userService.createUser(request);
 
-        var token = generateToken(
+        var accessToken = jwtUtils.generateAccessToken(
                 (AuthUserDetails) userDetailsService.loadUserByUsername(created.email())
         );
 
         return RegisterResponseDto.builder()
                 .id(created.id())
-                .token(token)
-                .expire(expiryMs)
+                .token(accessToken)
+                .expire(jwtUtils.getAccessExpiryMs())
                 .build();
+    }
+
+    public AuthResponseDto refresh(HttpServletRequest request) {
+
+    }
+
+    private String getCookie(HttpServletRequest request, String name) {
+        if (request.getCookies() == null) return null;
+
     }
 }

@@ -2,10 +2,10 @@ package git.whitechoke.wellony.controller;
 
 import git.whitechoke.wellony.dto.auth.LoginRequestDto;
 import git.whitechoke.wellony.dto.auth.LoginResponseDto;
-import git.whitechoke.wellony.dto.auth.RegisterRequestDto;
 import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
 import git.whitechoke.wellony.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,9 +35,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(
-            @Valid @RequestBody LoginRequestDto request
+            @Valid @RequestBody LoginRequestDto request,
+            HttpServletResponse httpResponse
     ) {
-        var response = authService.login(request);
+        var response = authService.login(request, httpResponse);
 
         return  ResponseEntity
                  .status(HttpStatus.OK)

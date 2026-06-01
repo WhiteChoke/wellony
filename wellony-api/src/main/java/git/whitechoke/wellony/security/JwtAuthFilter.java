@@ -1,6 +1,5 @@
 package git.whitechoke.wellony.security;
 
-import git.whitechoke.wellony.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final AuthService authService;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -29,10 +28,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if(token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String username = authService.extractUsername(token);
+            String username = jwtUtils.extractSubject(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if(authService.isTokenValid(token, userDetails)) {
+            if(jwtUtils.isTokenValid(token, userDetails)) {
                 var authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
