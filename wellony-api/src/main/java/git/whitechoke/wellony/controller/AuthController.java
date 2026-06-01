@@ -1,5 +1,7 @@
 package git.whitechoke.wellony.controller;
 
+import git.whitechoke.wellony.dto.auth.LoginRequestDto;
+import git.whitechoke.wellony.dto.auth.LoginResponseDto;
 import git.whitechoke.wellony.dto.auth.RegisterRequestDto;
 import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
@@ -29,5 +31,16 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(
+            @Valid @RequestBody LoginRequestDto request
+    ) {
+        var response = authService.login(request);
+
+        return  ResponseEntity
+                 .status(HttpStatus.OK)
+                 .body(response);
     }
 }

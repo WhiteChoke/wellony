@@ -1,6 +1,8 @@
 package git.whitechoke.wellony.service;
 
 import git.whitechoke.wellony.db.repository.UserRepository;
+import git.whitechoke.wellony.dto.auth.LoginRequestDto;
+import git.whitechoke.wellony.dto.auth.LoginResponseDto;
 import git.whitechoke.wellony.dto.auth.RegisterRequestDto;
 import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -71,6 +74,24 @@ public class AuthService {
     private SecretKey getSigningKey() {
         byte[] encodedKey = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(encodedKey);
+    }
+
+    public LoginResponseDto login(LoginRequestDto request) {
+
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.email(),
+                        request.password()
+                )
+        );
+
+        var token = generateToken((AuthUserDetails) authentication.getPrincipal());
+
+        return LoginResponseDto.builder().id(
+                ((AuthUserDetails) authentication.getPrincipal()).getId())
+                .token(token)
+                .expire(expiryMs)
+                .build();
     }
 
     public RegisterResponseDto register(UserCreateRequestDto request) {
