@@ -29,7 +29,7 @@ public class JwtUtils {
     @Value("${jwt.access-expiry-ms}")
     private int accessExpiryMs;
     @Value("${jwt.refresh-expiry-ms}")
-    private int refreshExpiryMs;
+    private long refreshExpiryMs;
 
     private final RefreshTokenRepository refreshTokenRepository;
 

@@ -38,45 +38,32 @@ public class AuthService {
 
     public LoginResponseDto login(LoginRequestDto request, HttpServletResponse response) {
 
-        var authentication = authenticationManager.authenticate(
+        var userDetails = (AuthUserDetails) authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
                         request.password()
                 )
-        );
+        ).getPrincipal();
 
-        var accessToken = jwtUtils.generateAccessToken(
-                (AuthUserDetails) authentication.getPrincipal()
-        );
+        var accessToken = jwtUtils.generateAccessToken(userDetails);
+        setRefreshToken(response, userDetails);
 
-        var refreshToken = jwtUtils.generateRefreshToken(
-                (AuthUserDetails) authentication.getPrincipal()
-        );
-
-        var cookies = ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(jwtUtils.getRefreshExpiryMs()/1000)
-                .sameSite("Lax")
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookies.toString());
-
-        return LoginResponseDto.builder().id(
-                ((AuthUserDetails) authentication.getPrincipal()).getId())
+        return LoginResponseDto.builder()
+                .id(userDetails.getId())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
     }
 
-    public RegisterResponseDto register(UserCreateRequestDto request) {
+    public RegisterResponseDto register(UserCreateRequestDto request, HttpServletResponse response) {
 
         var created = userService.createUser(request);
 
-        var accessToken = jwtUtils.generateAccessToken(
-                (AuthUserDetails) userDetailsService.loadUserByUsername(created.email())
-        );
+        var userDetails = (AuthUserDetails) userDetailsService.loadUserByUsername(created.email());
+
+        var accessToken = jwtUtils.generateAccessToken(userDetails);
+        setRefreshToken(response, userDetails);
+
 
         return RegisterResponseDto.builder()
                 .id(created.id())
@@ -104,6 +91,20 @@ public class AuthService {
                 .id(tokenEntity.getUser().getId())
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
+    }
+
+    private void setRefreshToken(HttpServletResponse response, AuthUserDetails userDetails) {
+        var refreshToken = jwtUtils.generateRefreshToken(userDetails);
+
+        var cookies = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(jwtUtils.getRefreshExpiryMs()/1000)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookies.toString());
     }
 
     private String getCookie(HttpServletRequest request, String name) {

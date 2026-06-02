@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "Tokens")
 public class RefreshTokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(unique = true, nullable = false)
