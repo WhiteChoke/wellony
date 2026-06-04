@@ -1,6 +1,5 @@
 package git.whitechoke.wellony.service;
 
-import git.whitechoke.wellony.db.entity.UserEntity;
 import git.whitechoke.wellony.db.repository.UserRepository;
 import git.whitechoke.wellony.dto.user.UserGetResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
