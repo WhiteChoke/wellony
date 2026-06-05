@@ -1,19 +1,18 @@
 package git.whitechoke.wellony.db.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Chats")
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Chats")
 public class ChatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,6 +24,12 @@ public class ChatEntity {
     @Column(name = "chat_avatar")
     private String chatAvatar;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
-    private List<ParticipantEntity> participantIds;
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ParticipantEntity> participants = new ArrayList<>();
+
+    public void addParticipant(ParticipantEntity participant) {
+        this.participants.add(participant);
+        participant.setChat(this);
+    }
 }
