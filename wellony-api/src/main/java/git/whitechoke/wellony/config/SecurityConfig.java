@@ -2,6 +2,8 @@ package git.whitechoke.wellony.config;
 
 import git.whitechoke.wellony.db.repository.UserRepository;
 import git.whitechoke.wellony.security.AuthUserDetailsService;
+import git.whitechoke.wellony.security.JwtAuthFilter;
+import git.whitechoke.wellony.security.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -36,7 +39,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) {
+    public JwtAuthFilter jwtAuthFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
+        return new JwtAuthFilter(jwtUtils, userDetailsService);
+    }
+
+    @Bean
+    public SecurityFilterChain SecurityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) {
         return http.
                 csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -49,6 +57,7 @@ public class SecurityConfig {
                 )
                 .cors(cors ->
                         cors.configurationSource(corsConfigurationSource()))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
