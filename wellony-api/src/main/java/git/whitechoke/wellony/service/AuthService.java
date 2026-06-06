@@ -1,5 +1,6 @@
 package git.whitechoke.wellony.service;
 
+import git.whitechoke.wellony.db.entity.UserEntity;
 import git.whitechoke.wellony.db.repository.RefreshTokenRepository;
 import git.whitechoke.wellony.dto.auth.AuthResponseDto;
 import git.whitechoke.wellony.dto.auth.LoginRequestDto;
@@ -18,11 +19,13 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 @Slf4j
@@ -114,5 +117,14 @@ public class AuthService {
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElse(null);
+    }
+
+    public UserEntity getUser() {
+        var authUserDetails = (AuthUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                .getPrincipal();
+
+        return authUserDetails.getUser();
     }
 }
