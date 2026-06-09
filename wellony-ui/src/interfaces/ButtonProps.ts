@@ -1,4 +1,4 @@
 export interface ISubmitButtonProp {
-    onClick: () => void,
+    onClick: (e: any) => void,
     text: string
 }
