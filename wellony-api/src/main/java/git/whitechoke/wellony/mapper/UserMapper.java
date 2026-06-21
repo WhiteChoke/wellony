@@ -1,7 +1,7 @@
 package git.whitechoke.wellony.mapper;
 
 import git.whitechoke.wellony.db.entity.UserEntity;
-import git.whitechoke.wellony.dto.user.UserGetResponseDto;
+import git.whitechoke.wellony.dto.user.UserGetInfoResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateResponseDto;
 import org.mapstruct.Mapper;
@@ -15,5 +15,5 @@ import org.mapstruct.ReportingPolicy;
 public interface UserMapper {
     UserCreateResponseDto toUserCreateResponseDto(UserEntity entity);
     UserEntity toUserEntity(UserCreateRequestDto dto);
-    UserGetResponseDto toGetResponseDto(UserEntity entity);
+    UserGetInfoResponseDto toGetResponseDto(UserEntity entity);
 }

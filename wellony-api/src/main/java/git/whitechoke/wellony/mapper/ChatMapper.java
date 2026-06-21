@@ -23,6 +23,11 @@ public interface ChatMapper {
     @Mapping(target = "id", source = "chat.id")
     ChatDetailDto toDetailDto(ParticipantEntity participant);
 
+    @Mapping(target = "chatName", source = "chatName")
+    @Mapping(target = "chatAvatar", source = "chatAvatar")
+    @Mapping(target = "id", source = "id")
+    ChatDetailDto toDetailDto(ChatEntity participant);
+
     default Long map(ParticipantEntity participant) {
         return participant != null ? participant.getId() : null;
     }

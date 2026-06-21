@@ -1,5 +1,6 @@
 package git.whitechoke.wellony.db.repository;
 
+import git.whitechoke.wellony.db.entity.ChatEntity;
 import git.whitechoke.wellony.db.entity.ParticipantEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,7 @@ public interface ParticipantRepository extends JpaRepository<ParticipantEntity, 
     @EntityGraph(attributePaths = {"chat"})
     @Query("select p from ParticipantEntity p where user.id = :id")
     List<ParticipantEntity> findAllByUserId(@Param("id") Long id);
+
+    @Query("select p.chat from ParticipantEntity p where user.id = :id")
+    List<ChatEntity> findAllUserChatsById(@Param("id") Long id);
 }

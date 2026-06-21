@@ -116,12 +116,4 @@ public class AuthService {
                 .orElse(null);
     }
 
-    public UserEntity getUser() {
-        var authUserDetails = (AuthUserDetails) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                .getPrincipal();
-
-        return authUserDetails.getUser();
-    }
 }
