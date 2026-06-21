@@ -2,8 +2,14 @@ import { useState, type ChangeEvent } from "react";
 import SubmitButton from "../components/submitButton/SubmitButton";
 import type { AuthResponse, LoginRequest } from "../interfaces/ApiData";
 import { loginRequest } from "../api/AuthRequests";
+import { useAuthContext } from "../contexts/authContext";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+
+    const authContext = useAuthContext();
+    const nav = useNavigate();
+
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("")
 
@@ -16,7 +22,10 @@ function LoginPage() {
         } ;
         
         loginRequest(body)
-        .then((res: AuthResponse | undefined) => console.log(res))
+        .then((res: AuthResponse | undefined) => {
+            authContext.setAuth(res ?? null);
+            nav("/");
+        })
         .catch((e: Error) => console.error(e.message));
         
     }

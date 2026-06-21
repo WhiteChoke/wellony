@@ -4,6 +4,7 @@ import type { AuthResponse } from "../interfaces/ApiData";
 export interface AuthContextType {
     auth: AuthResponse | null;
     setAuth: (auth: AuthResponse | null) => void;
+    isAuthLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
