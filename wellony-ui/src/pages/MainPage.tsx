@@ -12,29 +12,26 @@ function MainPage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const auth = useAuthContext();
 
-
+    
     useEffect(() => {
         if (auth.isAuthLoading || !auth.auth) {
             return;
         }
-
+        
         getUserInfo(auth.auth.token)
-            .then(res => {
+        .then(res => {
+                console.log("effect")
                 setUsername(res.data.username);
                 setAvatar(res.data.avatarUrl);
                 setChats(res.data.chats);
             })
             .catch((e: Error) => console.error(e))
             .finally(() => setIsLoading(false));
-    }, [auth.auth, auth.isAuthLoading, username]);
-
-
+    }, [auth.auth, auth.isAuthLoading]);
 
     if (isLoading) {
         return <Loader />;
     }
-
-
 
     return ( 
     <div>

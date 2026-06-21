@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 import SubmitButton from "../components/submitButton/SubmitButton";
-import type { AuthResponse, LoginRequest } from "../interfaces/ApiData";
+import type { LoginRequest } from "../interfaces/ApiData";
 import { loginRequest } from "../api/AuthRequests";
 import { useAuthContext } from "../contexts/authContext";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +22,8 @@ function LoginPage() {
         } ;
         
         loginRequest(body)
-        .then((res: AuthResponse | undefined) => {
-            authContext.setAuth(res ?? null);
+        .then((res) => {
+            authContext.setAuth(res.data ?? null);
             nav("/");
         })
         .catch((e: Error) => console.error(e.message));

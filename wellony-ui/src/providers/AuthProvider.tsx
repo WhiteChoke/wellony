@@ -18,15 +18,15 @@ function AuthProvider({ children }: AuthProviderProps) {
         .catch((e: Error) => console.error(e.message))
         .finally(() => setIsAuthLoading(false))
     }, [])
-    //
-    // const contextValue = useMemo<AuthContextType>(() => ({
-    //     auth,
-    //     setAuth,
-    //     isAuthLoading
-    // }), [auth, isAuthLoading]);
+    
+    const contextValue = useMemo<AuthContextType>(() => ({
+        auth,
+        setAuth,
+        isAuthLoading
+    }), [auth, isAuthLoading]);
 
     return ( 
-        <AuthContext.Provider value={{auth, setAuth, isAuthLoading}}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
      );
