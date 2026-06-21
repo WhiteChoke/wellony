@@ -2,8 +2,6 @@ package git.whitechoke.wellony.controller;
 
 import git.whitechoke.wellony.dto.auth.AuthResponseDto;
 import git.whitechoke.wellony.dto.auth.LoginRequestDto;
-import git.whitechoke.wellony.dto.auth.LoginResponseDto;
-import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
 import git.whitechoke.wellony.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(
+    public ResponseEntity<AuthResponseDto> register(
             @Valid @RequestBody UserCreateRequestDto request,
             HttpServletResponse httpResponse
     ) {
@@ -37,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(
+    public ResponseEntity<AuthResponseDto> login(
             @Valid @RequestBody LoginRequestDto request,
             HttpServletResponse httpResponse
     ) {

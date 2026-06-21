@@ -4,8 +4,6 @@ import git.whitechoke.wellony.db.entity.UserEntity;
 import git.whitechoke.wellony.db.repository.RefreshTokenRepository;
 import git.whitechoke.wellony.dto.auth.AuthResponseDto;
 import git.whitechoke.wellony.dto.auth.LoginRequestDto;
-import git.whitechoke.wellony.dto.auth.LoginResponseDto;
-import git.whitechoke.wellony.dto.auth.RegisterResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
 import git.whitechoke.wellony.security.AuthUserDetails;
 import git.whitechoke.wellony.security.JwtUtils;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Objects;
 
 
 @Slf4j
@@ -39,7 +36,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtils jwtUtils;
 
-    public LoginResponseDto login(LoginRequestDto request, HttpServletResponse response) {
+    public AuthResponseDto login(LoginRequestDto request, HttpServletResponse response) {
 
         var userDetails = (AuthUserDetails) authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -51,14 +48,14 @@ public class AuthService {
         var accessToken = jwtUtils.generateAccessToken(userDetails);
         setRefreshToken(response, userDetails);
 
-        return LoginResponseDto.builder()
+        return AuthResponseDto.builder()
                 .id(userDetails.getId())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
     }
 
-    public RegisterResponseDto register(UserCreateRequestDto request, HttpServletResponse response) {
+    public AuthResponseDto register(UserCreateRequestDto request, HttpServletResponse response) {
 
         var created = userService.createUser(request);
 
@@ -68,7 +65,7 @@ public class AuthService {
         setRefreshToken(response, userDetails);
 
 
-        return RegisterResponseDto.builder()
+        return AuthResponseDto.builder()
                 .id(created.id())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())

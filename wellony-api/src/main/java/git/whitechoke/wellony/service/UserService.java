@@ -1,5 +1,6 @@
 package git.whitechoke.wellony.service;
 
+import git.whitechoke.wellony.db.repository.ChatRepository;
 import git.whitechoke.wellony.db.repository.UserRepository;
 import git.whitechoke.wellony.dto.user.UserGetResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder encoder;
 
@@ -27,10 +29,13 @@ public class UserService {
         return userMapper.toUserCreateResponseDto(created);
     }
 
-    public UserGetResponseDto getUserById(Long id) {
-        var found = userRepository.findById(id)
+    public UserGetResponseDto getUserInfoById(Long id) {
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
-        return userMapper.toGetResponseDto(found);
+        var chats = chatRepository.findByUserId(user.getId());
+        
+
+        return userMapper.toGetResponseDto(user);
     }
 }
