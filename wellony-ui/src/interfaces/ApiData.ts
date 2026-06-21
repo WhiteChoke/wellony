@@ -14,3 +14,15 @@ export interface AuthResponse {
     readonly token: string,
     readonly expire: number
 }
+
+export interface UserInfo {
+    readonly nickname: string,
+    readonly avatarUrl: string,
+    readonly chats: [ChatDetails],
+}
+
+export interface ChatDetails {
+    readonly id: number,
+    readonly chatName: string,
+    readonly chatAvatar: string,
+}
