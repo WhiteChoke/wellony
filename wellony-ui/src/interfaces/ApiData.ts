@@ -16,9 +16,9 @@ export interface AuthResponse {
 }
 
 export interface UserInfo {
-    readonly nickname: string,
+    readonly username: string,
     readonly avatarUrl: string,
-    readonly chats: [ChatDetails],
+    readonly chats: ChatDetails[],
 }
 
 export interface ChatDetails {

@@ -1,5 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { AuthContext } from "../contexts/authContext";
+import {useEffect, useState, type ReactNode, useMemo} from "react";
+import {AuthContext, type AuthContextType} from "../contexts/authContext";
 import { refreshTokenRequest } from "../api/AuthRequests";
 import type { AuthResponse } from "../interfaces/ApiData";
 
@@ -14,10 +14,16 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     useEffect(() => {
         refreshTokenRequest()
-        .then((res: AuthResponse) => setAuth(res))
+        .then((res) => setAuth(res.data))
         .catch((e: Error) => console.error(e.message))
         .finally(() => setIsAuthLoading(false))
     }, [])
+    //
+    // const contextValue = useMemo<AuthContextType>(() => ({
+    //     auth,
+    //     setAuth,
+    //     isAuthLoading
+    // }), [auth, isAuthLoading]);
 
     return ( 
         <AuthContext.Provider value={{auth, setAuth, isAuthLoading}}>

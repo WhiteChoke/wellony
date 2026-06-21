@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
         if (authContext.auth === null && !authContext.isAuthLoading) {
             navigate("/login", { replace: true });
         }
-    }, [authContext, authContext.isAuthLoading ,navigate]);
+    }, [authContext.auth, authContext.isAuthLoading, navigate]);
 
     if (authContext.isAuthLoading) {
         return <Loader />;
