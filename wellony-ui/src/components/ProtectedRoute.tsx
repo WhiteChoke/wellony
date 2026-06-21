@@ -1,6 +1,7 @@
 import {type ReactNode, useEffect} from "react";
 import {useAuthContext} from "../contexts/authContext.ts";
 import {useNavigate} from "react-router-dom";
+import Loader from "./loader/Loader.tsx";
 
 interface ProtectedRouteProps {
     children: ReactNode
@@ -17,7 +18,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }, [authContext, authContext.isAuthLoading ,navigate]);
 
     if (authContext.isAuthLoading) {
-        return <div>Загрузка...</div>;
+        return <Loader />;
     }
 
     return children;
