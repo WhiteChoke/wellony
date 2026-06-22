@@ -1,0 +1,26 @@
+.ChatItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.5s ease;
+    transform: scale(1);
+}
+
+.ChatItem:hover {
+    transform: scale(1.05);
+    border: #7F9F7F 1px solid;
+    border-radius: 5px;
+}
+
+.ChatItem > img {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+}
+

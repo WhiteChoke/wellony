@@ -1,0 +1,55 @@
+.main_page {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+    "user-info opened-chat"
+    "chat-list opened-chat";
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    padding: 20px;
+}
+
+.user_info {
+    display: flex;
+    flex-direction: column;
+    grid-area: user-info;
+    height: fit-content;
+    padding: 10px 25px;
+    background-color: #010B13;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.user_avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.username {
+    margin: 10px 0;
+    justify-self: flex-end;
+}
+
+.chat_list {
+    display: flex;
+    flex-direction: column;
+    grid-area: chat-list;
+    width: 20vw;
+    background-color: #010B13;
+    border-radius: 10px;
+    margin: 10px 0;
+    gap: 10px;
+    padding: 25px;
+}
+
+.opened_chat {
+    grid-area: opened-chat;
+    border-radius: 10px;
+    background-color: #010B13;
+    margin: 0 30px
+}

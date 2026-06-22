@@ -3,6 +3,8 @@ import {getUserInfo} from "../api/UserRequests.ts";
 import type {ChatDetails} from "../interfaces/ApiData.ts";
 import Loader from "../components/loader/Loader.tsx";
 import {useAuthContext} from "../contexts/authContext.ts";
+import '../styles/MainPage.css';
+import ChatItem from "../components/chatItem/ChatItem.tsx";
 
 function MainPage() {
 
@@ -20,7 +22,6 @@ function MainPage() {
         
         getUserInfo(auth.auth.token)
         .then(res => {
-                console.log("effect")
                 setUsername(res.data.username);
                 setAvatar(res.data.avatarUrl);
                 setChats(res.data.chats);
@@ -34,12 +35,26 @@ function MainPage() {
     }
 
     return ( 
-    <div>
-        <aside>
-            <img src={avatar} alt="avatar" />
-            <button/>
-        </aside>
-        <div className="chat_list"/>
+    <div className="main_page">
+        <button className="user_info">
+            <img src={avatar} alt="avatar" className="user_avatar"/>
+            <span className="username">{username}</span>
+        </button>
+        <div className="chat_list">
+            {chats.map((chat: ChatDetails) =>
+                (
+                    <ChatItem
+                        id={chat.id}
+                        name={chat.chatName}
+                        avatar={chat.chatAvatar}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            console.log(chat.id, " chat:", chat.chatName);
+                        }}
+                    />
+                )
+            )}
+        </div>
         <div className="opened_chat"/>
     </div>
     
