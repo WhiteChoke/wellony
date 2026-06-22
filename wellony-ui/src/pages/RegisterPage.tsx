@@ -1,9 +1,10 @@
 import { useState, type ChangeEvent } from "react";
 import SubmitButton from "../components/submitButton/SubmitButton";
 import { useAuthContext } from "../contexts/authContext";
-import type { AuthResponse, RegisterRequest } from "../interfaces/ApiData";
+import type { RegisterRequest } from "../interfaces/ApiData";
 import { registerRequset } from "../api/AuthRequests";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/AuthStyle.css"
 
 function RegisterPage() {
 
@@ -25,15 +26,15 @@ function RegisterPage() {
         };
 
         registerRequset(body)
-        .then((res: AuthResponse) => {
-            authContext.setAuth(res);
+        .then((res) => {
+            authContext.setAuth(res.data);
             nav("/")
         })
         .catch((e: Error) => console.error(e.message));
 
     }
     return (
-        <form className="auth-from">
+        <form className="auth-form">
             <div className="input-field">
                 <label htmlFor="username">your username</label>
                 <input
@@ -43,6 +44,8 @@ function RegisterPage() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                     value={username}
                 />
+            </div>
+            <div className="input-field">
                 <label htmlFor="email">your email</label>
                 <input
                     name="email"
@@ -51,6 +54,8 @@ function RegisterPage() {
                     value={email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
+            </div>
+            <div className="input-field">
                 <label htmlFor="password">your password</label>
                 <input
                     name="password"
@@ -60,6 +65,7 @@ function RegisterPage() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
             </div>
+            <Link to="/login">Login</Link>
             <SubmitButton onClick={(e: MouseEvent) => sendRegisterRequest(e)} text="Sign In" />
         </form>
     );

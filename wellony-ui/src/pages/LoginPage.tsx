@@ -3,7 +3,8 @@ import SubmitButton from "../components/submitButton/SubmitButton";
 import type { LoginRequest } from "../interfaces/ApiData";
 import { loginRequest } from "../api/AuthRequests";
 import { useAuthContext } from "../contexts/authContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/AuthStyle.css"
 
 function LoginPage() {
 
@@ -52,6 +53,7 @@ function LoginPage() {
                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   />
             </div>
+            <Link to="/register">Register</Link>
             <SubmitButton onClick={(e: MouseEvent) => sendLoginRequest(e)} text="Sign In" />
         </form>
     );
