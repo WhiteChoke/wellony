@@ -10,10 +10,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -24,10 +22,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register(
-            @Valid @RequestBody UserCreateRequestDto request,
+            @Valid @RequestPart("user") UserCreateRequestDto user,
+            @RequestPart("avatar") MultipartFile avatar,
             HttpServletResponse httpResponse
     ) {
-        var response = authService.register(request, httpResponse);
+        var response = authService.register(user, avatar, httpResponse);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

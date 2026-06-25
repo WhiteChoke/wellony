@@ -9,7 +9,6 @@ import java.util.List;
 @Builder
 public record UserGetInfoResponseDto(
         @Nonnull String username,
-        @Nonnull String avatarUrl,
         @Nonnull List<ChatDetailDto> chats
 ) {
 }

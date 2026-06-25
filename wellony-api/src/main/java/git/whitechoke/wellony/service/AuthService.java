@@ -20,6 +20,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -55,18 +56,23 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponseDto register(UserCreateRequestDto request, HttpServletResponse response) {
+    public AuthResponseDto register(
+            UserCreateRequestDto request,
+            MultipartFile avatar,
+            HttpServletResponse response
+    ) {
+        var created = userService.createUser(request, avatar);
 
-        var created = userService.createUser(request);
-
-        var userDetails = (AuthUserDetails) userDetailsService.loadUserByUsername(created.email());
+        var userDetails = AuthUserDetails
+                .builder()
+                .user(created)
+                .build();
 
         var accessToken = jwtUtils.generateAccessToken(userDetails);
         setRefreshToken(response, userDetails);
 
-
         return AuthResponseDto.builder()
-                .id(created.id())
+                .id(created.getId())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();

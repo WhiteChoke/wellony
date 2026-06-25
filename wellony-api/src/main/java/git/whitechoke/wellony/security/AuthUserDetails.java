@@ -11,6 +11,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthUserDetails implements UserDetails {
