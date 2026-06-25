@@ -36,6 +36,27 @@
     width: fit-content;
 }
 
+.find_button {
+    display: flex;
+    height: 50px;
+    width: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: 0.3s;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.find_button:hover {
+    cursor: pointer;
+    border: #7F9F7F solid 1px;
+        }
+
+.find_button_icon {
+    height: inherit;
+    width: inherit;
+}
+
 .chat_list {
     display: flex;
     flex-direction: column;

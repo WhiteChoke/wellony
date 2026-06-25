@@ -3,8 +3,9 @@ import {getUserAvatar, getUserInfo} from "../api/UserRequests.ts";
 import type {ChatDetails} from "../interfaces/ApiData.ts";
 import Loader from "../components/loader/Loader.tsx";
 import {useAuthContext} from "../contexts/authContext.ts";
-import '../styles/MainPage.css';
 import ChatItem from "../components/chatItem/ChatItem.tsx";
+import '../styles/MainPage.css';
+import loupeIcon from '../assets/loupe.svg';
 
 function MainPage() {
 
@@ -49,7 +50,11 @@ function MainPage() {
             <img src={avatar} alt="avatar" className="user_avatar"/>
             <span className="username">{username}</span>
         </button>
+
         <div className="chat_list">
+            <button className="find_button">
+                <img src={loupeIcon} alt="find_button_icon" />
+            </button>
             {chats.map((chat: ChatDetails) =>
                 (
                     <ChatItem
