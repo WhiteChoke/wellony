@@ -2,9 +2,10 @@ import { useState, type ChangeEvent } from "react";
 import SubmitButton from "../components/submitButton/SubmitButton";
 import { useAuthContext } from "../contexts/authContext";
 import type { RegisterRequest } from "../interfaces/ApiData";
-import { registerRequset } from "../api/AuthRequests";
+import { registerRequest } from "../api/AuthRequests";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/AuthStyle.css"
+import AvatarLoader from "../components/avatarLoader/AvatarLoader.tsx";
 
 function RegisterPage() {
 
@@ -13,19 +14,31 @@ function RegisterPage() {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [avatar, setAvatar] = useState<File | null>(null)
 
     const nav = useNavigate();
 
     const sendRegisterRequest = (e: MouseEvent) => {
         e.preventDefault();    
-        
+
+        const formData = new FormData();
+
+        if (avatar) {
+            formData.append("avatar", avatar);
+        }
+
         const body: RegisterRequest = {
             username: username,
             email: email,
-            password: password
+            password: password,
         };
 
-        registerRequset(body)
+        formData.append(
+            "user",
+            new Blob([JSON.stringify(body)], {type: 'application/json'})
+        );
+
+        registerRequest(formData)
         .then((res) => {
             authContext.setAuth(res.data);
             nav("/")
@@ -35,6 +48,7 @@ function RegisterPage() {
     }
     return (
         <form className="auth-form">
+            <AvatarLoader avatar={avatar} setAvatar={setAvatar} />
             <div className="input-field">
                 <label htmlFor="username">your username</label>
                 <input

@@ -1,23 +1,16 @@
-/* Контейнер для центрирования */
 .avatar-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Скрываем стандартный страшный инпут */
 .hidden-input {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
+    height: 0;
+    width: 0;
 }
 
-/* Стилизуем лейбл под круглую кнопку-аватарку */
 .avatar-label {
     position: relative;
     width: 130px;
@@ -30,16 +23,15 @@
     align-items: center;
     overflow: hidden;
     background-color: #f3f4f6;
-    border: 2px dashed #d1d5db;
+    border: 2px solid #9ca3af;
     transition: all 0.2s ease-in-out;
 }
 
 .avatar-label:hover {
-    border-color: #3b82f6; /* Синеет при наведении */
+    border-color: #3b82f6;
     background-color: #eff6ff;
 }
 
-/* Заглушка, если фото нет */
 .avatar-placeholder {
     display: flex;
     flex-direction: column;
@@ -56,15 +48,12 @@
     font-size: 12px;
     font-family: sans-serif;
 }
-
-/* Отображение самой картинки */
 .avatar-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Чтобы картинка не сжималась и не растягивалась */
+    object-fit: cover;
 }
 
-/* Затемнение при наведении на уже загруженную картинку */
 .avatar-overlay {
     position: absolute;
     top: 0;
@@ -83,5 +72,5 @@
 }
 
 .avatar-label:hover .avatar-overlay {
-    opacity: 1; /* Проявляем надпись "Изменить" при ховере */
+    opacity: 1;
 }

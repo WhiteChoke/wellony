@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getUserInfo} from "../api/UserRequests.ts";
+import {getUserAvatar, getUserInfo} from "../api/UserRequests.ts";
 import type {ChatDetails} from "../interfaces/ApiData.ts";
 import Loader from "../components/loader/Loader.tsx";
 import {useAuthContext} from "../contexts/authContext.ts";
@@ -19,15 +19,24 @@ function MainPage() {
         if (auth.isAuthLoading || !auth.auth) {
             return;
         }
-        
-        getUserInfo(auth.auth.token)
-        .then(res => {
+
+        const token = auth.auth.token
+
+        getUserInfo(token)
+            .then(res => {
                 setUsername(res.data.username);
-                setAvatar(res.data.avatarUrl);
                 setChats(res.data.chats);
             })
             .catch((e: Error) => console.error(e))
+
+        getUserAvatar(token)
+            .then(res => {
+                const avatarUrl = URL.createObjectURL(res.data)
+                setAvatar(avatarUrl);
+            })
+            .catch((e: Error) => console.error(e))
             .finally(() => setIsLoading(false));
+
     }, [auth.auth, auth.isAuthLoading]);
 
     if (isLoading) {

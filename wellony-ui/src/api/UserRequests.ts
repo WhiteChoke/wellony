@@ -9,3 +9,12 @@ export const getUserInfo = async (token: string): AxiosPromise<UserInfo> => {
         }
     })
 }
+
+export const getUserAvatar = async (token: string): AxiosPromise<Blob> => {
+    return apiClient.get("/users/avatar", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        responseType: "blob"
+    })
+}
