@@ -24,10 +24,11 @@ public class UserEntity {
     private String password;
     @Column(name = "email", unique = true,  nullable = false)
     private String email;
+    @Builder.Default
     @Column(name = "avatar", columnDefinition = "bytea")
     private byte[] avatar = loadAvatar();
 
-    private byte[] loadAvatar() {
+    private static byte[] loadAvatar() {
         try (InputStream is = UserEntity.class.getResourceAsStream("/static/user.png")) {
             if (is == null) return new byte[0];
             return is.readAllBytes();

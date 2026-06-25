@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class UserService {
         var userToCreate = userMapper.toUserEntity(request);
         userToCreate.setPassword(encoder.encode(request.password()));
 
-        if (!avatar.isEmpty()) {
+        if (avatar != null) {
             try{
                 userToCreate.setAvatar(avatar.getBytes());
             } catch (IOException e) {
@@ -62,8 +63,9 @@ public class UserService {
     }
 
     public byte[] getAvatar() {
-        var user = authService.getUser();
+        var currentUser = authService.getUser();
+        var avatarBytes = currentUser.getAvatar();
 
-        return user.getAvatar();
+        return avatarBytes;
     }
 }

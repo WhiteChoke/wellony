@@ -26,3 +26,9 @@ export interface ChatDetails {
     readonly chatName: string,
     readonly chatAvatar: string,
 }
+
+export interface FoundUserInfo {
+    readonly id: number,
+    readonly name: string,
+    readonly avatar: Blob
+}

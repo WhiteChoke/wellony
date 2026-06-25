@@ -34,6 +34,7 @@ function MainPage() {
             .then(res => {
                 const avatarUrl = URL.createObjectURL(res.data)
                 setAvatar(avatarUrl);
+                console.log(res)
             })
             .catch((e: Error) => console.error(e))
             .finally(() => setIsLoading(false));
@@ -58,6 +59,7 @@ function MainPage() {
             {chats.map((chat: ChatDetails) =>
                 (
                     <ChatItem
+                        key={chat.id}
                         id={chat.id}
                         name={chat.chatName}
                         avatar={chat.chatAvatar}

@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register(
             @Valid @RequestPart("user") UserCreateRequestDto user,
-            @RequestPart("avatar") MultipartFile avatar,
+            @RequestPart(value = "avatar", required = false) MultipartFile avatar,
             HttpServletResponse httpResponse
     ) {
         var response = authService.register(user, avatar, httpResponse);
