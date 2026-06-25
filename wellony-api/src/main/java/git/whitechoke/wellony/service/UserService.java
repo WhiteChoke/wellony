@@ -60,4 +60,10 @@ public class UserService {
                 .chats(chats)
                 .build();
     }
+
+    public byte[] getAvatar() {
+        var user = authService.getUser();
+
+        return user.getAvatar();
+    }
 }
