@@ -3,12 +3,13 @@ package git.whitechoke.wellony.service;
 import git.whitechoke.wellony.db.entity.UserEntity;
 import git.whitechoke.wellony.db.repository.ParticipantRepository;
 import git.whitechoke.wellony.db.repository.UserRepository;
+import git.whitechoke.wellony.dto.user.UserSearchResponseDto;
 import git.whitechoke.wellony.dto.user.UserGetInfoResponseDto;
 import git.whitechoke.wellony.dto.user.create.UserCreateRequestDto;
-import git.whitechoke.wellony.dto.user.create.UserCreateResponseDto;
 import git.whitechoke.wellony.mapper.ChatMapper;
 import git.whitechoke.wellony.mapper.UserMapper;
 import git.whitechoke.wellony.security.AuthUserDetailsService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -62,10 +63,24 @@ public class UserService {
                 .build();
     }
 
-    public byte[] getAvatar() {
-        var currentUser = authService.getUser();
-        var avatarBytes = currentUser.getAvatar();
+    public byte[] getAvatar(Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));
+
+        var avatarBytes = user.getAvatar();
 
         return avatarBytes;
+    }
+
+    public List<UserSearchResponseDto> searchByUsername(String username) {
+        var user =  authService.getUser();
+        var found = userRepository.searchByUsername("%" + username + "%");
+        found.remove(user);
+
+
+        return found
+                .stream()
+                .map(userMapper::toUserSearchResponseDto)
+                .toList();
     }
 }

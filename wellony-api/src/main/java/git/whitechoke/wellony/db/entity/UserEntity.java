@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -36,5 +37,17 @@ public class UserEntity {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load avatar", e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email);
     }
 }
