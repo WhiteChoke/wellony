@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ChatCreateResponseDto (
+public record GropeCreateResponseDto(
         Long chatId,
         String chatName,
         String avatarUrl,

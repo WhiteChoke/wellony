@@ -4,9 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ChatCreateRequestDto(
+public record GropeCreateRequestDto(
         @NotNull String chatName,
-        List<Long> participantIds,
-        String chatAvatarPath
+        List<Long> participantIds
 ) {
 }

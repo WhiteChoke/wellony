@@ -1,12 +1,7 @@
 package git.whitechoke.wellony.service;
 
-import git.whitechoke.wellony.db.entity.ChatEntity;
-import git.whitechoke.wellony.db.entity.MessageEntity;
-import git.whitechoke.wellony.db.entity.ParticipantEntity;
-import git.whitechoke.wellony.db.repository.ChatRepository;
-import git.whitechoke.wellony.db.repository.MessageRepository;
-import git.whitechoke.wellony.db.repository.ParticipantRepository;
-import git.whitechoke.wellony.db.repository.UserRepository;
+import git.whitechoke.wellony.db.entity.*;
+import git.whitechoke.wellony.db.repository.*;
 import git.whitechoke.wellony.dto.chat.*;
 import git.whitechoke.wellony.enums.Role;
 import git.whitechoke.wellony.mapper.ChatMapper;
@@ -16,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -28,16 +24,16 @@ public class ChatService {
     private final AuthUserDetailsService authService;
     private final ParticipantRepository participantRepository;
     private final MessageRepository messageRepository;
+    private final DialogueRepository dialogueRepository;
 
     @Transactional
-    public ChatCreateResponseDto createChat(ChatCreateRequestDto chatCreateRequestDto) {
+    public GropeCreateResponseDto createGrope(GropeCreateRequestDto chatCreateRequestDto) {
 
         var owner = authService.getUser();
 
         var createdChat = chatRepository.save(
                 ChatEntity.builder()
                     .chatName(chatCreateRequestDto.chatName())
-                    .chatAvatar(chatCreateRequestDto.chatAvatarPath())
                     .build()
         );
 
@@ -92,5 +88,34 @@ public class ChatService {
                         .chat(chat)
                         .build()
         );
+    }
+
+    public DialogueCreateResponseDto createDialogue(Long companionId) {
+        var user = authService.getUser();
+        var companion = userRepository.findById(companionId)
+                .orElseThrow(() -> new EntityNotFoundException("Not found user with id=" + companionId));
+
+
+        var saved = dialogueRepository.save(
+                DialogueEntity.builder()
+                        .firstUser(user)
+                        .secondUser(companion)
+                        .build()
+        );
+
+        return DialogueCreateResponseDto.builder()
+                .companionId(companionId)
+                .companionName(companion.getUsername())
+                .dialogueId(saved.getId())
+                .build();
+    }
+
+    public List<DialogueGetResponse> getAllDialogues() {
+        var user = authService.getUser();
+
+        var found = dialogueRepository.findAllCompanionsByUserId(user.getId());
+
+        return found.stream().map(chatMapper::toDialogueGetResponse).toList();
+
     }
 }

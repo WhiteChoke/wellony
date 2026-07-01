@@ -50,7 +50,7 @@
 .find_button:hover {
     cursor: pointer;
     border: #7F9F7F solid 1px;
-        }
+}
 
 .find_button_icon {
     height: inherit;

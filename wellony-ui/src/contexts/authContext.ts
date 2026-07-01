@@ -2,8 +2,8 @@ import { createContext, useContext } from "react";
 import type { AuthResponse } from "../interfaces/ApiData";
 
 export interface AuthContextType {
-    auth: AuthResponse | null;
-    setAuth: (auth: AuthResponse | null) => void;
+    auth: AuthResponse;
+    setAuth: (auth: AuthResponse) => void;
     isAuthLoading: boolean;
 }
 

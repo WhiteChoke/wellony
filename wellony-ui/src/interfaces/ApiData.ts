@@ -24,11 +24,32 @@ export interface UserInfo {
 export interface ChatDetails {
     readonly id: number,
     readonly chatName: string,
-    readonly chatAvatar: string,
+    readonly chatAvatar: Blob,
 }
 
 export interface FoundUserInfo {
     readonly id: number,
     readonly name: string,
     readonly avatar: Blob
+}
+
+export interface SearchUserInfo {
+    readonly id: number,
+    readonly username: string,
+}
+
+export interface CreateChatRequest {
+    chatName: number
+    participantIds: number[]
+}
+
+export interface CreateDialogueResponse {
+    readonly companionId: number,
+    readonly companionName: string,
+    readonly dialogueId: number
+}
+
+export interface GetDialogueResponse {
+    readonly companionId: number,
+    readonly companionName: string,
 }

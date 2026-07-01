@@ -2,7 +2,9 @@ package git.whitechoke.wellony.mapper;
 
 import git.whitechoke.wellony.db.entity.ChatEntity;
 import git.whitechoke.wellony.db.entity.ParticipantEntity;
-import git.whitechoke.wellony.dto.chat.ChatCreateResponseDto;
+import git.whitechoke.wellony.db.entity.UserEntity;
+import git.whitechoke.wellony.dto.chat.DialogueGetResponse;
+import git.whitechoke.wellony.dto.chat.GropeCreateResponseDto;
 import git.whitechoke.wellony.dto.chat.ChatDetailDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,7 +18,7 @@ import org.mapstruct.ReportingPolicy;
 public interface ChatMapper {
     @Mapping(target = "participantIds", source = "participants")
     @Mapping(target = "chatId", source = "id")
-    ChatCreateResponseDto toCreateResponseDto(ChatEntity chat);
+    GropeCreateResponseDto toCreateResponseDto(ChatEntity chat);
 
     @Mapping(target = "chatName", source = "chat.chatName")
     @Mapping(target = "chatAvatar", source = "chat.chatAvatar")
@@ -27,6 +29,10 @@ public interface ChatMapper {
     @Mapping(target = "chatAvatar", source = "chatAvatar")
     @Mapping(target = "id", source = "id")
     ChatDetailDto toDetailDto(ChatEntity participant);
+
+    @Mapping(target = "companionId", source = "id")
+    @Mapping(target = "companionName", source = "username")
+    DialogueGetResponse toDialogueGetResponse(UserEntity user);
 
     default Long map(ParticipantEntity participant) {
         return participant != null ? participant.getId() : null;

@@ -1,0 +1,24 @@
+.FoundUserItem {
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    padding: 5px;
+    border-radius: 5px;
+    border-color: #7F9F7F;
+}
+
+.FoundUserItem:hover {
+    border: 1px solid #7F9F7F;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.FoundUserItemAvatar {
+    border-radius: 50%;
+}
+
+.FoundUserItemName {
+    font-size: 1.5rem;
+    align-self: center;
+    margin-left: 15px;
+}

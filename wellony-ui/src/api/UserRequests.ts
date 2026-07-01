@@ -1,5 +1,5 @@
 import {apiClient} from "./Client.ts";
-import type { UserInfo} from "../interfaces/ApiData.ts";
+import type {SearchUserInfo, UserInfo} from "../interfaces/ApiData.ts";
 import type {AxiosPromise} from "axios";
 
 export const getUserInfo = async (token: string): AxiosPromise<UserInfo> => {
@@ -10,11 +10,22 @@ export const getUserInfo = async (token: string): AxiosPromise<UserInfo> => {
     })
 }
 
-export const getUserAvatar = async (token: string): AxiosPromise<Blob> => {
-    return apiClient.get("/users/avatar", {
+export const getUserAvatar = async (token: string, id: number): AxiosPromise<Blob> => {
+    return apiClient.get(`/users/avatar/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`
         },
         responseType: "blob"
+    })
+}
+
+export const searchForUser = async (token: string, username: string): AxiosPromise<[SearchUserInfo]> => {
+    return apiClient.get("/users/search", {
+        params: {
+            username: username
+        },
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
     })
 }
