@@ -3,6 +3,9 @@ package git.whitechoke.wellony.db.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -26,4 +29,7 @@ public class MessageEntity {
     @ManyToOne
     @JoinColumn(name = "chat_id")
     private ChatEntity chat;
+
+    @Column(nullable = false)
+    private Instant sentAt;
 }

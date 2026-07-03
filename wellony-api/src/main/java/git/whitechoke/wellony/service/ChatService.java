@@ -23,7 +23,6 @@ public class ChatService {
     private final ChatMapper chatMapper;
     private final AuthUserDetailsService authService;
     private final ParticipantRepository participantRepository;
-    private final MessageRepository messageRepository;
     private final DialogueRepository dialogueRepository;
 
     @Transactional
@@ -75,21 +74,6 @@ public class ChatService {
     }
 
     @Transactional
-    public void addMessage(MessageSendDto request) {
-
-        var user  = authService.getUser();
-        var chat = chatRepository.findById(request.chatId())
-                .orElseThrow(() -> new EntityNotFoundException("Not found chat with id=" + request.chatId()));
-
-        messageRepository.save(
-                MessageEntity.builder()
-                        .message(request.message())
-                        .sender(user)
-                        .chat(chat)
-                        .build()
-        );
-    }
-
     public DialogueCreateResponseDto createDialogue(Long companionId) {
         var user = authService.getUser();
         var companion = userRepository.findById(companionId)
