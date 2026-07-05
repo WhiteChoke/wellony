@@ -17,8 +17,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getUserInfo() {
-        var info = userService.getUserInfoById();
-
+        var info = userService.getUserInfo();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(info);

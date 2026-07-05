@@ -3,8 +3,6 @@ package git.whitechoke.wellony.db.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 @Getter
@@ -25,18 +23,15 @@ public class UserEntity {
     private String password;
     @Column(name = "email", unique = true,  nullable = false)
     private String email;
-    @Builder.Default
-    @Column(name = "avatar", columnDefinition = "bytea")
-    private byte[] avatar = loadAvatar();
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "avatar_id")
+    private AvatarEntity avatar;
 
-    private static byte[] loadAvatar() {
-        try (InputStream is = UserEntity.class.getResourceAsStream("/static/user.png")) {
-            if (is == null) return new byte[0];
-            return is.readAllBytes();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load avatar", e);
-        }
+    public void setAvatar(byte[] data) {
+        var userAvatar = new AvatarEntity();
+        userAvatar.setUser(this);
+        userAvatar.setData(data);
+        this.avatar = userAvatar;
     }
 
     @Override

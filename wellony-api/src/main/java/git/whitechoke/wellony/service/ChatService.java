@@ -98,8 +98,12 @@ public class ChatService {
         var user = authService.getUser();
 
         var found = dialogueRepository.findAllCompanionsByUserId(user.getId());
-
-        return found.stream().map(chatMapper::toDialogueGetResponse).toList();
+        var users = found.stream().map(d ->
+                !d.getFirstUser().getId().equals(user.getId())
+                ? d.getFirstUser()
+                : d.getSecondUser()
+        ).toList();
+        return users.stream().map(chatMapper::toDialogueGetResponse).toList();
 
     }
 }

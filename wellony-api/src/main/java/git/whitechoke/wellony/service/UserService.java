@@ -1,6 +1,7 @@
 package git.whitechoke.wellony.service;
 
 import git.whitechoke.wellony.db.entity.UserEntity;
+import git.whitechoke.wellony.db.repository.AvatarRepository;
 import git.whitechoke.wellony.db.repository.ParticipantRepository;
 import git.whitechoke.wellony.db.repository.UserRepository;
 import git.whitechoke.wellony.dto.user.UserSearchResponseDto;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthUserDetailsService authService;
     private final ParticipantRepository participantRepository;
+    private final AvatarRepository avatarRepository;
     private final UserMapper userMapper;
     private final ChatMapper chatMapper;
     private final BCryptPasswordEncoder encoder;
@@ -50,7 +52,7 @@ public class UserService {
 
     }
 
-    public UserGetInfoResponseDto getUserInfoById() {
+    public UserGetInfoResponseDto getUserInfo() {
         var user = authService.getUser();
 
         var chats = participantRepository.findAllUserChatsById(user.getId())
@@ -64,10 +66,10 @@ public class UserService {
     }
 
     public byte[] getAvatar(Long id) {
-        var user = userRepository.findById(id)
+        var avatar = avatarRepository.findByUserId(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));
 
-        var avatarBytes = user.getAvatar();
+        var avatarBytes = avatar.getData();
 
         return avatarBytes;
     }
