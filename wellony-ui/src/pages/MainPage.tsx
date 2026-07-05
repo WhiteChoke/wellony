@@ -18,40 +18,33 @@ function MainPage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const auth = useAuthContext();
-    const token = auth.auth.token
 
     useEffect(() => {
-        if (auth.isAuthLoading || !auth.auth) {
+        if (auth.auth === null || auth.isAuthLoading ) {
             return;
         }
 
-        getUserInfo(token)
-            .then(res => {
-                setUsername(res.data.username);
-                setChats(res.data.chats);
-            })
-            .catch((e: Error) => console.error(e))
+        const token = auth.auth.token
 
-        getUserAvatar(token, auth.auth.id)
-            .then(res => {
-                const avatarUrl = URL.createObjectURL(res.data)
+        async function fetchUserInfo() {
+            try {
+                const userInfo = await getUserInfo(token);
+                const userAvatar = await getUserAvatar(token, auth.auth.id);
+                const avatarUrl = URL.createObjectURL(userAvatar.data)
+
+                setUsername(userInfo.data.username);
+                setChats(userInfo.data.chats);
                 setAvatar(avatarUrl);
-            })
-            .catch((e: Error) => console.error(e))
-            .finally(() => setIsLoading(false));
-
-    }, [auth.auth, auth.isAuthLoading]);
-
-    useEffect(() => {
-        if (auth.isAuthLoading || !auth.auth) {
-            return;
+            } catch (e) {
+                console.error(e);
+            }
         }
 
-        const fetchChats = async () => {
+        async function fetchChats() {
             setIsLoading(true);
-            const dialogueResonse = await getAllDialogues(token);
+            const dialogueResponse = await getAllDialogues(token);
 
-            const chatPromises = dialogueResonse.data.map(async (d) => {
+            const chatPromises = dialogueResponse.data.map(async (d) => {
                 const dialogueAvatar = await getUserAvatar(token, d.companionId);
                 const dialogueAvatarBlob = dialogueAvatar.data;
 
@@ -67,9 +60,11 @@ function MainPage() {
             setChats(finalChatList)
         }
 
+        fetchUserInfo();
         fetchChats().finally(() => setIsLoading(false));
 
     }, [auth.auth, auth.isAuthLoading]);
+
 
     if (isLoading) {
         return <Loader />;

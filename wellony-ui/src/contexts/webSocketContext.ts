@@ -1,9 +1,21 @@
-import type {Message, MessageSendRequest} from "../interfaces/ApiData.ts";
+import type {MessageSendRequest} from "../interfaces/ApiData.ts";
+import {createContext, useContext} from "react";
+import type {IMessage} from "@stomp/stompjs";
 
-interface SocketContext {
+export interface WebSocketContextProps {
     isConnected: boolean;
     sendMessage: (destination: string, body: MessageSendRequest) => void;
-    subscribe: (destination: string, callback: (message: Message) => void) => void;
+    subscribe: (destination: string, callback: (message: IMessage) => void) => void;
 }
 
-const 
+export const WebSocketContext = createContext<WebSocketContextProps | undefined>(undefined);
+
+export function useWebSocketContext(): WebSocketContextProps {
+    const context = useContext(WebSocketContext);
+
+    if (context === undefined) {
+        throw new Error("useWebSocketContext must be used with a AuthContext");
+    }
+
+    return context;
+}

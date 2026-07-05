@@ -8,6 +8,7 @@ import MainPage from './pages/MainPage.tsx'
 import AuthProvider from "./providers/AuthProvider.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import PublicRoute from "./components/PublicRoute.tsx";
+import WebSocketProvider from "./providers/WebSocketProvider.tsx";
 
 const routes = createBrowserRouter([
     { path: "/", element: <ProtectedRoute> <MainPage /> </ProtectedRoute>  },
@@ -18,7 +19,9 @@ const routes = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <AuthProvider>
-        <RouterProvider router={routes} />
+          <WebSocketProvider>
+              <RouterProvider router={routes} />
+          </WebSocketProvider>
       </AuthProvider>
   </StrictMode>
 )

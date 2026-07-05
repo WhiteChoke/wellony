@@ -53,3 +53,14 @@ export interface GetDialogueResponse {
     readonly companionId: number,
     readonly companionName: string,
 }
+
+export interface MessageSendRequest {
+    message: string,
+}
+
+export interface Message {
+    messageId: number,
+    sentAt: Date,
+    senderName: string,
+    senderId: number,
+}
