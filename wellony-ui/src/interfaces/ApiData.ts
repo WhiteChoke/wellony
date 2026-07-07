@@ -11,6 +11,7 @@ export interface RegisterRequest {
 
 export interface AuthResponse {
     readonly id: number,
+    readonly username: string,
     readonly token: string,
     readonly expire: number
 }
@@ -21,16 +22,14 @@ export interface UserInfo {
     readonly chats: ChatDetails[],
 }
 
+export interface ChatGetRequest {
+    readonly chats: ChatDetails[];
+}
+
 export interface ChatDetails {
     readonly id: number,
     readonly chatName: string,
-    readonly chatAvatar: Blob,
-}
-
-export interface FoundUserInfo {
-    readonly id: number,
-    readonly name: string,
-    readonly avatar: Blob
+    readonly chatAvatarId: number,
 }
 
 export interface SearchUserInfo {
@@ -38,24 +37,23 @@ export interface SearchUserInfo {
     readonly username: string,
 }
 
+type ChatTypes = "DIRECT" | "GROUP";
+
 export interface CreateChatRequest {
-    chatName: number
+    chatName: number | null;
     participantIds: number[]
-}
-
-export interface CreateDialogueResponse {
-    readonly companionId: number,
-    readonly companionName: string,
-    readonly dialogueId: number
-}
-
-export interface GetDialogueResponse {
-    readonly companionId: number,
-    readonly companionName: string,
+    chatType: ChatTypes;
 }
 
 export interface MessageSendRequest {
+    senderId: number,
     message: string,
+}
+
+export interface FoundUserInfo {
+    id: number,
+    name: string,
+    avatar: Blob
 }
 
 export interface Message {

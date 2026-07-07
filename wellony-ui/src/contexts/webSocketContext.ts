@@ -5,7 +5,7 @@ import type {IMessage} from "@stomp/stompjs";
 export interface WebSocketContextProps {
     isConnected: boolean;
     sendMessage: (destination: string, body: MessageSendRequest) => void;
-    subscribe: (destination: string, callback: (message: IMessage) => void) => void;
+    subscribe: (destination: string, callback: (message: IMessage) => void) => () => void;
 }
 
 export const WebSocketContext = createContext<WebSocketContextProps | undefined>(undefined);

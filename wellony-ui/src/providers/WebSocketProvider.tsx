@@ -19,7 +19,6 @@ function WebSocketProvider({ children }: WebSocketProviderProps) {
         }
 
         const client = new Client({
-            // webSocketFactory: () => new SockJS("http://localhost:8080/ws-chat"),
             brokerURL: "ws://10.8.1.9:8080/ws-chat",
             connectHeaders: {
                 Authorization: `Bearer ${auth.auth.token}`
@@ -72,6 +71,7 @@ function WebSocketProvider({ children }: WebSocketProviderProps) {
         const subscription = stompClientRef.current.subscribe(topic, callback);
 
         return () => {
+            console.log('Subscribed topic: ', topic);
             subscription.unsubscribe();
         };
     }

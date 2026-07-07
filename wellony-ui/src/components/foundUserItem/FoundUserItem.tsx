@@ -1,9 +1,10 @@
 import cl from "./FoundUserItem.module.css";
-import type {ChatDetails, FoundUserInfo} from "../../interfaces/ApiData.ts";
+import type {CreateChatRequest, FoundUserInfo} from "../../interfaces/ApiData.ts";
 import {useChatListContext} from "../../contexts/chatListContext.ts";
-import {createDialogue} from "../../api/ChatRequests.ts";
 import {useAuthContext} from "../../contexts/authContext.ts";
 import {getUserAvatar} from "../../api/UserRequests.ts";
+import type {ChatInfo} from "../../interfaces/ChatInterfaces.ts";
+import {createChatRequest} from "../../api/ChatRequests.ts";
 
 interface FoundUserItemProps {
     user: FoundUserInfo
@@ -16,14 +17,19 @@ function FoundUserItem(props: FoundUserItemProps) {
 
     async function startDialogue(id: number) {
         const token = auth.auth.token;
-        const createResponse = await createDialogue(token, id)
+        const request: CreateChatRequest = {
+            chatName: null,
+            chatType: "DIRECT",
+            participantIds: [id]
+        }
 
+        const createResponse = await createChatRequest(token, request);
         const companionAvatar = await getUserAvatar(token, id)
 
-        const chat: ChatDetails = {
+        const chat: ChatInfo = {
             id: createResponse.data.dialogueId,
-            chatName: createResponse.data.companionName,
-            chatAvatar: companionAvatar.data
+            name: createResponse.data.companionName,
+            avatar: companionAvatar.data
         }
 
         const chats = chatListContext.chatList;

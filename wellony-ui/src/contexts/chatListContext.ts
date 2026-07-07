@@ -1,9 +1,9 @@
 import {createContext, useContext} from "react";
-import type {ChatDetails} from "../interfaces/ApiData.ts";
+import type {ChatInfo} from "../interfaces/ChatInterfaces.ts";
 
 export interface ChatListContextType {
-    chatList: ChatDetails[];
-    setChatList: (chatList: ChatDetails[]) => void;
+    chatList: ChatInfo[];
+    setChatList: (chatList: ChatInfo[]) => void;
 }
 
 export const ChatListContext = createContext<ChatListContextType | undefined>(undefined);

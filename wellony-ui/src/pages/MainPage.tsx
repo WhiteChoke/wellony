@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import {getUserAvatar, getUserInfo} from "../api/UserRequests.ts";
-import type {ChatDetails} from "../interfaces/ApiData.ts";
+import {getUserAvatar} from "../api/UserRequests.ts";
 import Loader from "../components/loader/Loader.tsx";
 import {useAuthContext} from "../contexts/authContext.ts";
 import ChatItem from "../components/chatItem/ChatItem.tsx";
@@ -8,15 +7,18 @@ import '../styles/MainPage.css';
 import loupeIcon from '../assets/loupe.svg';
 import PopUpSearch from "../components/popUpSearch/PopUpSearch.tsx";
 import {ChatListContext} from "../contexts/chatListContext.ts";
-import {getAllDialogues} from "../api/ChatRequests.ts";
+import {getAllChats} from "../api/ChatRequests.ts";
+import {useWebSocketContext} from "../contexts/webSocketContext.ts";
+import type {ChatInfo} from "../interfaces/ChatInterfaces.ts";
 
 function MainPage() {
 
     const [username, setUsername] = useState<string>("");
-    const [chats, setChats] = useState<ChatDetails[]>([]);
+    const [chats, setChats] = useState<ChatInfo[]>([]);
     const [avatar, setAvatar] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isSearching, setIsSearching] = useState<boolean>(false);
+    const webSocketContext = useWebSocketContext();
     const auth = useAuthContext();
 
     useEffect(() => {
@@ -27,13 +29,13 @@ function MainPage() {
         const token = auth.auth.token
 
         async function fetchUserInfo() {
+            setIsLoading(true);
+
             try {
-                const userInfo = await getUserInfo(token);
                 const userAvatar = await getUserAvatar(token, auth.auth.id);
                 const avatarUrl = URL.createObjectURL(userAvatar.data)
 
-                setUsername(userInfo.data.username);
-                setChats(userInfo.data.chats);
+                setUsername(auth.auth.username);
                 setAvatar(avatarUrl);
             } catch (e) {
                 console.error(e);
@@ -41,18 +43,17 @@ function MainPage() {
         }
 
         async function fetchChats() {
-            setIsLoading(true);
-            const dialogueResponse = await getAllDialogues(token);
+            const chatResponse = await getAllChats(token);
 
-            const chatPromises = dialogueResponse.data.map(async (d) => {
-                const dialogueAvatar = await getUserAvatar(token, d.companionId);
+            const chatPromises = chatResponse.data.chats.map(async (c) => {
+                const dialogueAvatar = await getUserAvatar(token, c.chatAvatarId);
                 const dialogueAvatarBlob = dialogueAvatar.data;
 
                 return {
-                    id: d.companionId,
-                    chatName: d.companionName,
-                    chatAvatar: dialogueAvatarBlob,
-                } as ChatDetails;
+                    id: c.id,
+                    name: c.chatName,
+                    avatar: dialogueAvatarBlob,
+                } as ChatInfo;
             });
 
             const finalChatList = await Promise.all(chatPromises);
@@ -81,16 +82,18 @@ function MainPage() {
             </button>
 
             <div className="chat_list">
-                {chats.map((chat: ChatDetails) =>
+                {chats.map((chat: ChatInfo) =>
                     (
                         <ChatItem
                             key={chat.id}
                             id={chat.id}
-                            name={chat.chatName}
-                            avatar={chat.chatAvatar}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                console.log(chat.id, " chat:", chat.chatName);
+                            name={chat.name}
+                            avatar={chat.avatar}
+                            onClick={() => {
+                                webSocketContext.sendMessage(`/app/chat/${chat.id}`, {
+                                    message: `Hello ${chat.name}!`,
+                                    senderId: auth.auth.id,
+                                })
                             }}
                         />
                     )
