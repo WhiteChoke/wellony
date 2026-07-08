@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+    font-family: "Montserrat";
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #18181e;
+}
+
+/*auth*/
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    gap: 15px;
+    color: #7F9F7F;
+}
+
+.auth-form > a {
+    color: #7F9F7F;
+}
+
+.input-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field > label {
+    position: absolute;
+    padding: 5px;
+    top: -15px;
+    left: 8px;
+    background-color: #18181e;
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.input-field > input {
+    padding: 10px;
+    border: 2px solid #7F9F7F;
+    background-color: transparent;
+    color: #7F9F7F;
+    font-size: 1.4rem;
+    border-radius: 8px;
+}
+
+/*main page*/
+.main_page {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+    "user-info opened-chat"
+    "chat-list opened-chat";
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    padding: 20px;
+}
+
+.user_info {
+    display: flex;
+    flex-direction: column;
+    grid-area: user-info;
+    height: fit-content;
+    padding: 10px 25px;
+    background-color: #010B13;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    justify-content: left;
+}
+
+.user_avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.username {
+    margin: 10px 0;
+    width: fit-content;
+}
+
+.find_button {
+    display: flex;
+    height: 50px;
+    width: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: 0.3s;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.find_button:hover {
+    cursor: pointer;
+    border: #7F9F7F solid 1px;
+}
+
+.find_button_icon {
+    height: inherit;
+    width: inherit;
+}
+
+.chat_list {
+    display: flex;
+    flex-direction: column;
+    grid-area: chat-list;
+    width: 20vw;
+    background-color: #010B13;
+    border-radius: 10px;
+    margin: 10px 0;
+    gap: 10px;
+    padding: 25px;
+}
+
+.opened_chat {
+    grid-area: opened-chat;
+    border-radius: 10px;
+    background-color: #010B13;
+    margin: 0 30px
+}
