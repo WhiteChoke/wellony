@@ -1,8 +1,12 @@
 import {useAuthContext} from "../contexts/authContext.ts";
 import {useState} from "react";
-import {apiClient} from "../api/Client.ts";
+import {apiClient, type ContentType} from "../api/Client.ts";
 
-export default function useSendData<TResponse, TBody = Record<string, never>>(url: string, data: TBody) {
+export default function useSendData<TResponse, TBody = Record<string, never>> (
+    url: string,
+    data: TBody,
+    contentType: ContentType = "application/json"
+) {
     const {auth} = useAuthContext();
     const [isLoading, setIsLoading ] = useState(false);
     const [error, setError] = useState(false);
@@ -13,7 +17,8 @@ export default function useSendData<TResponse, TBody = Record<string, never>>(ur
         try{
             const response = await apiClient.post<TResponse>(url, data, {
                 headers: {
-                    Authorization: `Bearer ${auth.token}`
+                    Authorization: `Bearer ${auth.token}`,
+                    "Content-Type": contentType
                 }
             })
 
