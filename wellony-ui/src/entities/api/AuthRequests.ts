@@ -1,4 +1,4 @@
-import type { AuthResponse, LoginRequest } from "../ApiData.ts";
+import type { AuthResponse, LoginRequest } from "../user/userEntity.ts";
 import { apiClient } from "../../shared/api/Client.ts"
 import type {AxiosPromise} from "axios";
 

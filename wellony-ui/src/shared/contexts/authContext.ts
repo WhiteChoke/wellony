@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { AuthResponse } from "../../entities/ApiData.ts";
+import type { AuthResponse } from "../../entities/user/userEntity.ts";
 
 export interface AuthContextType {
     auth: AuthResponse;

@@ -1,5 +1,5 @@
 import {apiClient} from "../../shared/api/Client.ts";
-import type {SearchUserInfo, UserInfo} from "../ApiData.ts";
+import type {SearchUserInfo, UserInfo} from "../user/userEntity.ts";
 import type {AxiosPromise} from "axios";
 
 export const getUserInfo = async (token: string): AxiosPromise<UserInfo> => {

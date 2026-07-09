@@ -1,5 +1,5 @@
 import cl from "./FoundUserItem.module.css";
-import type {CreateChatRequest, FoundUserInfo} from "../../entities/ApiData.ts";
+import type {CreateChatRequest, FoundUserInfo} from "../../entities/user/userEntity.ts";
 import {useChatListContext} from "../../shared/contexts/chatListContext.ts";
 import {useAuthContext} from "../../shared/contexts/authContext.ts";
 import {getUserAvatar} from "../../entities/api/UserRequests.ts";

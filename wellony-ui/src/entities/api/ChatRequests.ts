@@ -1,4 +1,4 @@
-import type {ChatGetRequest, CreateChatRequest} from "../ApiData.ts";
+import type {ChatGetRequest, CreateChatRequest} from "../user/userEntity.ts";
 import {apiClient} from "../../shared/api/Client.ts";
 import type {AxiosPromise} from "axios";
 

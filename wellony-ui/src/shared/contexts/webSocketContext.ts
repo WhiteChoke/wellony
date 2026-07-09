@@ -1,4 +1,4 @@
-import type {MessageSendRequest} from "../../entities/ApiData.ts";
+import type {MessageSendRequest} from "../../entities/user/userEntity.ts";
 import {createContext, useContext} from "react";
 import type {IMessage} from "@stomp/stompjs";
 

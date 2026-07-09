@@ -1,4 +1,4 @@
-import type {FoundUserInfo, SearchUserInfo} from "../../entities/ApiData.ts";
+import type {FoundUserInfo, SearchUserInfo} from "../../entities/user/userEntity.ts";
 import {type ChangeEvent, useEffect, useState} from "react";
 import cl from "./PopUpSearch.module.css"
 import useDebounce from "../../shared/hooks/useDebound.ts";

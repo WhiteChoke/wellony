@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 import SubmitButton from "../../widgets/submitButton/SubmitButton.tsx";
 import { useAuthContext } from "../../shared/contexts/authContext.ts";
-import type { RegisterRequest } from "../../entities/ApiData.ts";
+import type { RegisterRequest } from "../../entities/user/userEntity.ts";
 import { registerRequest } from "../../entities/api/AuthRequests.ts";
 import { Link, useNavigate } from "react-router-dom";
 import "../sign-up/styles/AuthStyle.css"

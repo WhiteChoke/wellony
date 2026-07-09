@@ -1,7 +1,7 @@
 import {useEffect, useState, type ReactNode, useMemo} from "react";
 import {AuthContext, type AuthContextType} from "../../shared/contexts/authContext.ts";
 import { refreshTokenRequest } from "../api/AuthRequests.ts";
-import type { AuthResponse } from "../ApiData.ts";
+import type { AuthResponse } from "../user/userEntity.ts";
 
 interface AuthProviderProps {
     children: ReactNode
