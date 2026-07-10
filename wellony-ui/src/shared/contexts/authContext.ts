@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import type { AuthResponse } from "../../entities/user/userEntity.ts";
+import type {jwtToken} from "../../entities/token/jwtRoken.ts";
 
 export interface AuthContextType {
-    auth: AuthResponse;
-    setAuth: (auth: AuthResponse) => void;
+    auth: jwtToken;
+    setAuth: (auth: jwtToken) => void;
     isAuthLoading: boolean;
 }
 

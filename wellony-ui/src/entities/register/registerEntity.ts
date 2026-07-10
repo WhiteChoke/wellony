@@ -3,10 +3,3 @@ export interface RegisterRequest {
     email: string,
     password: string
 }
-
-export interface RegisterResponse {
-    readonly id: number,
-    readonly username: string,
-    readonly token: string,
-    readonly expire: number
-}

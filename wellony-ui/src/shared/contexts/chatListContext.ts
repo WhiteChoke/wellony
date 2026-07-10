@@ -1,5 +1,5 @@
 import {createContext, useContext} from "react";
-import type {ChatInfo} from "../../entities/ChatInterfaces.ts";
+import type {ChatInfo} from "../../entities/chat/chatEntity.ts";
 
 export interface ChatListContextType {
     chatList: ChatInfo[];

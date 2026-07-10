@@ -2,16 +2,15 @@ import {useAuthContext} from "../contexts/authContext.ts";
 import {useState} from "react";
 import {apiClient, type ContentType} from "../api/Client.ts";
 
-export default function useSendData<TResponse, TBody = Record<string, never>> (
+export default function useSendData<TResponse> (
     url: string,
-    data: TBody,
     contentType: ContentType = "application/json"
 ) {
     const {auth} = useAuthContext();
     const [isLoading, setIsLoading ] = useState(false);
     const [error, setError] = useState(false);
 
-    async function sendRequest() {
+    async function sendRequest<TBody = Record<string, never>> (data: TBody = {} as TBody) {
         setIsLoading(true);
 
         try{
