@@ -1,8 +1,8 @@
 import {useAuthContext} from "../../../shared/contexts/authContext.ts";
 import {type ChangeEvent, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import AvatarLoader from "../../../widgets/avatarLoader/AvatarLoader.tsx";
-import SubmitButton from "../../../widgets/submitButton/SubmitButton.tsx";
+import AvatarLoader from "../../../shared/ui/avatar-loader/AvatarLoader.tsx";
+import SubmitButton from "../../../shared/ui/submit-button/SubmitButton.tsx";
 import useSendData from "../../../shared/hooks/useSendData.ts";
 import type {RegisterRequest} from "../../../entities/register/registerEntity.ts";
 import type {jwtToken} from "../../../entities/token/jwtRoken.ts";

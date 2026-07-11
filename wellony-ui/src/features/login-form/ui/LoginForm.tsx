@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {type ChangeEvent, useState} from "react";
-import SubmitButton from "../../../widgets/submitButton/SubmitButton.tsx";
+import SubmitButton from "../../../shared/ui/submit-button/SubmitButton.tsx";
 import useSendData from "../../../shared/hooks/useSendData.ts";
 import {useAuthContext} from "../../../shared/contexts/authContext.ts";
 import type {jwtToken} from "../../../entities/token/jwtRoken.ts";

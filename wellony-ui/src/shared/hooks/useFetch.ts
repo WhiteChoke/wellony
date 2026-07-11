@@ -3,16 +3,15 @@ import {useState} from "react";
 import {apiClient} from "../api/Client.ts";
 import type {ResponseType} from "axios";
 
-export default function useFetch<TResponse, TParams = Record<string, never>> (
+export default function useFetch<TResponse> (
     url: string,
-    params: TParams,
     responseType: ResponseType = "json"
 ) {
     const {auth} = useAuthContext();
     const [isLoading, setIsLoading ] = useState(false);
     const [error, setError] = useState(false);
 
-    async function sendRequest() {
+    async function sendRequest<TParams = Record<string, never>> (params: TParams = {} as TParams) {
         setIsLoading(true);
 
         try {

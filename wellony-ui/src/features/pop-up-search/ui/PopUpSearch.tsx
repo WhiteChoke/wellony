@@ -1,10 +1,10 @@
-import type {FoundUserInfo, SearchUserInfo} from "../../entities/user/userEntity.ts";
+import type {FoundUserInfo} from "../../../entities/user/userEntity.ts";
 import {type ChangeEvent, useEffect, useState} from "react";
-import cl from "./PopUpSearch.module.css"
-import useDebounce from "../../shared/hooks/useDebound.ts";
-import {getUserAvatar, searchForUser} from "../../entities/api/UserRequests.ts";
-import {useAuthContext} from "../../shared/contexts/authContext.ts";
-import FoundUserItem from "../foundUserItem/FoundUserItem.tsx";
+import cl from "../styles/PopUpSearch.module.css"
+import useDebounce from "../../../shared/hooks/useDebound.ts";
+import {getUserAvatar, searchForUser} from "../../../entities/api/UserRequests.ts";
+import {useAuthContext} from "../../../shared/contexts/authContext.ts";
+import FoundUserItem from "../../../widgets/foundUserItem/FoundUserItem.tsx";
 
 interface PopUpSearchProps {
     isVisible: boolean,

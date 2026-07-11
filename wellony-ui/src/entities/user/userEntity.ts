@@ -1,9 +1,6 @@
-import type {ChatDetails} from "../chat/chatEntity.ts";
-
-export interface UserInfo {
+export interface CurrentUser {
     readonly username: string,
-    readonly avatarUrl: string,
-    readonly chats: ChatDetails[],
+    readonly avatar: Blob,
 }
 
 export interface FoundUserInfo {

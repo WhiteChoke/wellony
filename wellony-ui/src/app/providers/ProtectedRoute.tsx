@@ -1,7 +1,7 @@
 import {type ReactNode, useEffect} from "react";
 import {useAuthContext} from "../../shared/contexts/authContext.ts";
 import {useNavigate} from "react-router-dom";
-import Loader from "../../widgets/loader/Loader.tsx";
+import Loader from "../../shared/ui/loader/Loader.tsx";
 
 interface ProtectedRouteProps {
     children: ReactNode
