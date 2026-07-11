@@ -1,46 +1,61 @@
 import {useEffect, useState} from 'react';
-import {getUserAvatar} from "../../entities/api/UserRequests.ts";
 import type {ChatGetRequest, ChatInfo} from "../../entities/chat/chatEntity.ts";
 import useFetch from "../../shared/hooks/useFetch.ts";
+import Loader from '../../shared/ui/loader/Loader.tsx';
+import defaultAvatar from "../../shared/assets/defaultAvatar.png"
+import loupeIcon from "../../shared/assets/loupe.svg"
+import { useWebSocketContext } from '../../shared/contexts/webSocketContext.ts';
+import { useChatListContext } from '../../shared/contexts/chatListContext.ts';
+import ChatItem from '../chatItem/ChatItem.tsx';
 
-function ChatList() {
+interface ChatListProps {
+    setIsSearching: (value: boolean) => void,
+}
 
-    const [chats, setChats] = useState<ChatInfo[]>([]);
-    const {sendRequest, error} = useFetch<ChatGetRequest>("/chats");
-    const {sendRequest, error} = useFetch<Blob>("/chats");
+function ChatList(props: ChatListProps) {
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const webSocketContext = useWebSocketContext();
+    const {sendRequest: fetchChats, error: chatsError} = useFetch<ChatGetRequest>("/chats");
+    // TODO: Create endpoint for fetch avatar with id in query params
+    const {sendRequest: fetchAvatar, error: avatarError} = useFetch<Blob>("/avatar");
+    const {chatList, setChatList} = useChatListContext();
 
     useEffect(() => {
-        async function fetchChats() {
-            const chatResponse = await sendRequest();
+        async function fetchData() {
+            const chatResponse = await fetchChats();
 
-            if (error || chatResponse == null) {
+            if (chatsError || chatResponse == null) {
                 console.error("Error fetching chats...");
                 return;
             }
 
             const chatPromises = chatResponse.chats.map(async (c) => {
-                const dialogueAvatar = await getUserAvatar(token, c.chatAvatarId);
-                const dialogueAvatarBlob = dialogueAvatar.data;
+                const avatarResponse = await fetchAvatar({id: c.chatAvatarId})
 
                 return {
                     id: c.id,
                     name: c.chatName,
-                    avatar: dialogueAvatarBlob,
+                    avatar: avatarResponse ?? defaultAvatar,
                 } as ChatInfo;
             });
 
             const finalChatList = await Promise.all(chatPromises);
 
-            setChats(finalChatList)
+            setChatList(finalChatList)
         }
 
-        fetchChats().finally(() => setIsLoading(false));
+        fetchData().finally(() => setIsLoading(false));
 
     }, []);
 
+    if (isLoading) {
+        return <Loader/>
+    }
+
     return (
         <div className="chat_list">
-            {chats.map((chat: ChatInfo) =>
+            {chatList.map((chat: ChatInfo) =>
                 (
                     <ChatItem
                         key={chat.id}
@@ -50,7 +65,6 @@ function ChatList() {
                         onClick={() => {
                             webSocketContext.sendMessage(`/app/chat/${chat.id}`, {
                                 message: `Hello ${chat.name}!`,
-                                senderId: auth.auth.id,
                             })
                         }}
                     />
@@ -58,7 +72,7 @@ function ChatList() {
             )}
             <button
                 className="find_button"
-                onClick={() => setIsSearching(true)}
+                onClick={() => props.setIsSearching(true)}
             >
                 <img src={loupeIcon} alt="find_button_icon" />
             </button>

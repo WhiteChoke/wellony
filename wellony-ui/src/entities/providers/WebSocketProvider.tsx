@@ -2,7 +2,7 @@ import {type ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 import {Client, type IMessage} from "@stomp/stompjs";
 import {useAuthContext} from "../../shared/contexts/authContext.ts";
 import {WebSocketContext, type WebSocketContextProps} from "../../shared/contexts/webSocketContext.ts";
-import type {MessageSendRequest} from "../user/userEntity.ts";
+import type { MessageSendRequest } from '../message/messageEntity.ts';
 
 interface WebSocketProviderProps {
     children: ReactNode;
