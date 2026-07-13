@@ -4,7 +4,6 @@ import {ChatListContext, type messageCacheType} from "../../shared/contexts/chat
 import UserInfo from "../../widgets/user-info/UserInfo.tsx";
 import ChatList from "../../widgets/chat-list/ChatList.tsx";
 import type { ChatInfo } from "../../entities/chat/chatEntity.ts";
-import './styles/MainPage.css';
 
 function MainPage() {
 

@@ -1,10 +1,10 @@
 import cl from "./FoundUserItem.module.css";
-import type {CreateChatRequest, FoundUserInfo} from "../../entities/user/userEntity.ts";
+import type {FoundUserInfo} from "../../entities/user/userEntity.ts";
 import {useChatListContext} from "../../shared/contexts/chatListContext.ts";
-import {useAuthContext} from "../../shared/contexts/authContext.ts";
-import {getUserAvatar} from "../../entities/api/UserRequests.ts";
-import type {ChatInfo} from "../../entities/ChatInterfaces.ts";
-import {createChatRequest} from "../../entities/api/ChatRequests.ts";
+import useSendData from "../../shared/hooks/useSendData.ts";
+import type { ChatDetails, ChatInfo, CreateChatRequest } from "../../entities/chat/chatEntity.ts";
+import useFetch from "../../shared/hooks/useFetch.ts";
+import defaultAvatar from "../../shared/assets/defaultAvatar.png"
 
 interface FoundUserItemProps {
     user: FoundUserInfo
@@ -13,31 +13,38 @@ interface FoundUserItemProps {
 function FoundUserItem(props: FoundUserItemProps) {
 
     const chatListContext = useChatListContext();
-    const auth = useAuthContext();
+    const {sendRequest: createChatRequest, error: createError} = useSendData<ChatDetails>("/chats");
+    const {sendRequest: fetchAvatar} = useFetch<Blob>("/avatar");
 
     async function startDialogue(id: number) {
-        const token = auth.auth.token;
         const request: CreateChatRequest = {
             chatName: null,
             chatType: "DIRECT",
             participantIds: [id]
         }
 
-        const createResponse = await createChatRequest(token, request);
-        const companionAvatar = await getUserAvatar(token, id)
+        const response = await createChatRequest(request);
 
-        const chat: ChatInfo = {
-            id: createResponse.data.dialogueId,
-            name: createResponse.data.companionName,
-            avatar: companionAvatar.data
+        if (response == null || createError) {
+            console.log("Failed to create a chat")
+            return;
         }
+    
+        const avatarBlob = await fetchAvatar({id: id})
+        
+
+        const chat = {
+            id: response.id,
+            name: response.chatName,
+            avatar: avatarBlob ?? defaultAvatar
+        } as ChatInfo
 
         const chats = chatListContext.chatList;
         chatListContext.setChatList([...chats, chat]);
     }
 
     return (
-        <div className={cl.FoundUserItem}
+        <button className={cl.FoundUserItem}
              onClick={() => startDialogue(props.user.id)}
         >
             <img src={URL.createObjectURL(props.user.avatar)}
@@ -47,7 +54,7 @@ function FoundUserItem(props: FoundUserItemProps) {
             <span className={cl.FoundUserItemName}>
                 {props.user.name}
             </span>
-        </div>
+        </button>
     );
 }
 

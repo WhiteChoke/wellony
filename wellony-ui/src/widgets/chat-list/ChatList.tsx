@@ -6,7 +6,7 @@ import defaultAvatar from "../../shared/assets/defaultAvatar.png"
 import loupeIcon from "../../shared/assets/loupe.svg"
 import { useWebSocketContext } from '../../shared/contexts/webSocketContext.ts';
 import { useChatListContext } from '../../shared/contexts/chatListContext.ts';
-import ChatItem from '../chatItem/ChatItem.tsx';
+import ChatItem from '../../features/chat-item/ChatItem.tsx';
 
 interface ChatListProps {
     setIsSearching: (value: boolean) => void,

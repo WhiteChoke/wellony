@@ -4,7 +4,7 @@ import cl from "../styles/PopUpSearch.module.css"
 import useDebounce from "../../../shared/hooks/useDebound.ts";
 import {getUserAvatar, searchForUser} from "../../../entities/api/UserRequests.ts";
 import {useAuthContext} from "../../../shared/contexts/authContext.ts";
-import FoundUserItem from "../../../widgets/foundUserItem/FoundUserItem.tsx";
+import FoundUserItem from "../../found-user-item/FoundUserItem.tsx";
 
 interface PopUpSearchProps {
     isVisible: boolean,
