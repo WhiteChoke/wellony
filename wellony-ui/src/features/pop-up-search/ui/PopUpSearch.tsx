@@ -27,6 +27,8 @@ function PopUpSearch(props: PopUpSearchProps) {
         foundClasses.push(cl.empty);
     }
 
+    // TODO: refactor useEffect
+
     useEffect(() => {
 
 
