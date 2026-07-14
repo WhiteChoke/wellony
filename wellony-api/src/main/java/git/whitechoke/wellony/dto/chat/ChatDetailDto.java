@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record ChatDetailDto(
         String chatName,
-        String chatAvatar,
+        Long chatAvatarId,
         Long id
 ) {
 }

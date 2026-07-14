@@ -10,13 +10,20 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Participants")
+@Table(
+        name = "Participants",
+        indexes = {
+                @Index(name = "idx_participant_user", columnList = "user_id"),
+                @Index(name = "idx_participant_chat", columnList = "chat_id"),
+                @Index(name = "uk_participant_chat_user", columnList = "user_id, chat_id", unique = true),
+        }
+)
 public class ParticipantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
     private ChatEntity chat;
 

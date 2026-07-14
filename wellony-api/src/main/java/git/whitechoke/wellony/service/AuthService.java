@@ -33,7 +33,6 @@ public class AuthService {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtils jwtUtils;
 
@@ -51,6 +50,7 @@ public class AuthService {
 
         return AuthResponseDto.builder()
                 .id(userDetails.getId())
+                .username(userDetails.getUser().getUsername())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
@@ -73,6 +73,7 @@ public class AuthService {
 
         return AuthResponseDto.builder()
                 .id(created.getId())
+                .username(created.getUsername())
                 .token(accessToken)
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
@@ -95,6 +96,7 @@ public class AuthService {
         return AuthResponseDto.builder()
                 .token(token)
                 .id(tokenEntity.getUser().getId())
+                .username(tokenEntity.getUser().getUsername())
                 .expire(jwtUtils.getAccessExpiryMs())
                 .build();
     }

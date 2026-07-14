@@ -52,19 +52,6 @@ public class UserService {
 
     }
 
-    public UserGetInfoResponseDto getUserInfo() {
-        var user = authService.getUser();
-
-        var chats = participantRepository.findAllUserChatsById(user.getId())
-                .stream().map(chatMapper::toDetailDto).toList();
-
-
-        return UserGetInfoResponseDto.builder()
-                .username(user.getUsername())
-                .chats(chats)
-                .build();
-    }
-
     public byte[] getAvatar(Long id) {
         var avatar = avatarRepository.findByUserId(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));

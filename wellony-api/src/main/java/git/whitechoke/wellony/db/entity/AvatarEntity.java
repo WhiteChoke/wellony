@@ -15,6 +15,8 @@ public class AvatarEntity {
     private Long id;
     @OneToOne(mappedBy = "avatar")
     private UserEntity user;
+    @OneToOne
+    private ChatEntity chat;
     @Column(name = "avatar", columnDefinition = "bytea")
     private byte[] data;
 }

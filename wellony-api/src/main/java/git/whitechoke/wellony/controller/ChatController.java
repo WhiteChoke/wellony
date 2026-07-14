@@ -1,15 +1,14 @@
 package git.whitechoke.wellony.controller;
 
-import git.whitechoke.wellony.dto.chat.GropeCreateRequestDto;
+import git.whitechoke.wellony.dto.chat.ChatCreateResponseDto;
+import git.whitechoke.wellony.dto.chat.ChatCreateRequestDto;
 import git.whitechoke.wellony.dto.chat.ChatGetRequest;
-import git.whitechoke.wellony.dto.chat.GropeCreateResponseDto;
 import git.whitechoke.wellony.dto.message.MessageSendRequestDto;
 import git.whitechoke.wellony.dto.message.MessageSendResponseDto;
 import git.whitechoke.wellony.service.ChatService;
 import git.whitechoke.wellony.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -29,30 +28,12 @@ public class ChatController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<GropeCreateResponseDto> createGrope(
-            @Valid @RequestBody GropeCreateRequestDto gropeCreateRequestDto
+    public ResponseEntity<ChatCreateResponseDto> createGrope(
+            @Valid @RequestBody ChatCreateRequestDto chatCreateRequestDto
     ) {
-        var response = chatService.createGrope(gropeCreateRequestDto);
+        var response = chatService.createChat(chatCreateRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
-    }
-
-    @PostMapping("/dialogue/{companionId}")
-    public ResponseEntity<?> createDialogue(@PathVariable Long companionId) {
-        var created = chatService.createDialogue(companionId);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(created);
-    }
-
-    @GetMapping("/dialogue")
-    public ResponseEntity<?> getAllDialogues() {
-        var response = chatService.getAllDialogues();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
                 .body(response);
     }
 

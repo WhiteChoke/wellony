@@ -36,6 +36,7 @@ public class JwtUtils {
     public String generateAccessToken(AuthUserDetails userDetails) {
         var claims = new HashMap<String, Object>();
         claims.put("userId", userDetails.getId());
+        claims.put("username", userDetails.getUser().getUsername());
 
         return Jwts.builder()
                 .claims(claims)

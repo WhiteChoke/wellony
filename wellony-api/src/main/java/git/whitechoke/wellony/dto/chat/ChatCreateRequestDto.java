@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record GropeCreateRequestDto(
+public record ChatCreateRequestDto(
         String chatName,
         List<Long> participantIds,
         @NotNull ChatType chatType

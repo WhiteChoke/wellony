@@ -15,14 +15,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<?> getUserInfo() {
-        var info = userService.getUserInfo();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(info);
-    }
-
     @GetMapping("/avatar/{id}")
     public ResponseEntity<?> getUserAvatar(@PathVariable Long id) {
         var avatar = userService.getAvatar(id);

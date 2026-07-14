@@ -5,6 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record DialogueGetResponse(
+        @Nonnull Long id,
         @Nonnull Long companionId,
         @Nonnull String companionName
 ) {
