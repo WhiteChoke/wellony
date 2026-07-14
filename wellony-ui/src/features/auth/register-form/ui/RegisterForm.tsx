@@ -1,11 +1,12 @@
-import {useAuthContext} from "../../../shared/contexts/authContext.ts";
 import {type ChangeEvent, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import AvatarLoader from "../../../shared/ui/avatar-loader/AvatarLoader.tsx";
-import SubmitButton from "../../../shared/ui/submit-button/SubmitButton.tsx";
-import useSendData from "../../../shared/hooks/useSendData.ts";
-import type {RegisterRequest} from "../../../entities/register/registerEntity.ts";
-import type {jwtToken} from "../../../entities/token/jwtRoken.ts";
+import useSendData from "../../../../shared/hooks/useSendData";
+import { useAuthContext } from "../../../../shared/contexts/authContext";
+import type { jwtToken } from "../../../../entities/token/jwtRoken";
+import type { RegisterRequest } from "../../../../entities/register/registerEntity";
+import AvatarLoader from "../../../../shared/ui/avatar-loader/AvatarLoader";
+import SubmitButton from "../../../../shared/ui/submit-button/SubmitButton";
+import styles from "../../styles/LoginForm.module.css"
 
 function RegisterForm() {
 
@@ -50,9 +51,9 @@ function RegisterForm() {
         navigate("/")
     }
     return (
-        <form className="auth-form">
+        <form className={styles.authForm}>
             <AvatarLoader avatar={avatar} setAvatar={setAvatar}/>
-            <div className="input-field">
+            <div className={styles.inputField}>
                 <label htmlFor="username">your username</label>
                 <input
                     name="username"
@@ -62,7 +63,7 @@ function RegisterForm() {
                     value={username}
                 />
             </div>
-            <div className="input-field">
+            <div className={styles.inputField}>
                 <label htmlFor="email">your email</label>
                 <input
                     name="email"
@@ -72,7 +73,7 @@ function RegisterForm() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
             </div>
-            <div className="input-field">
+            <div className={styles.inputField}>
                 <label htmlFor="password">your password</label>
                 <input
                     name="password"

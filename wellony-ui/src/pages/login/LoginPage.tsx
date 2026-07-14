@@ -1,11 +1,7 @@
-import "../sign-up/styles/AuthStyle.css"
-import LoginForm from "../../features/login-form/ui/LoginForm.tsx";
+import LoginForm from "../../features/auth/login-form/ui/LoginForm.tsx";
 
 function LoginPage() {
-
-    return (
-        <LoginForm/>
-    );
+  return <LoginForm />;
 }
 
 export default LoginPage;
